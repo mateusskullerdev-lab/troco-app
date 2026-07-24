@@ -31,8 +31,8 @@ pub fn calcular_troco(
     })
 }
 
-#[tauri::command]
-pub fn calcular(valor_total: u32, valor_recebido: u32) -> Resultado {
+#[tauri::command(rename_all = "snake_case")]
+pub fn calcular(valor_total: u32, valor_recebido: u32) -> Result<Resultado, String> {
     // Lista padrão do Real Brasileiro (em centavos)
     let moedas_e_notas = vec![
         Denominacao {
@@ -98,8 +98,9 @@ pub fn calcular(valor_total: u32, valor_recebido: u32) -> Resultado {
     };
 
     match calcular_troco(input, moedas_e_notas) {
-        Ok(resultado) => resultado,
-        Err(_) => panic!("Ocorreu um erro"),
+        Ok(resultado) => Ok(resultado),
+        Err(CalcError::ValorInsuficiente) => Err("Valor insuficiente".to_string()),
+        Err(_) => Err("Ocorreu um erro inesperado".to_string()),
     }
 }
 
@@ -110,7 +111,7 @@ mod tests {
     fn test_troco() {
         let valor_total = 6400;
         let valor_recebido = 10000;
-        let res = calcular(valor_total, valor_recebido);
+        let res = calcular(valor_total, valor_recebido).unwrap();
         assert_eq!(res.valor_do_troco, 3600);
     }
 }
