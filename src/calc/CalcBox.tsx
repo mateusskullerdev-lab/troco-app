@@ -54,7 +54,7 @@ function CalcBox() {
             });
             console.log(res);
           } catch (error) {
-            console.log(error);
+            alert("Valor recebido é insuficiente para pagar a compra");
           }
         }}
       >
