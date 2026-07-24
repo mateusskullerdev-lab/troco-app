@@ -1,2 +1,2 @@
-mod calculate;
+pub mod calculate;
 mod models;
