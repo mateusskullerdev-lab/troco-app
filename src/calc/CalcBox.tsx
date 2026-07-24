@@ -47,11 +47,15 @@ function CalcBox() {
         onClick={async () => {
           console.log("Pago (centavos):", valorPagoCent);
           console.log("Compra (centavos):", valorDaCompraCent);
-          let res = await invoke("calcular", {
-            valor_total: valorDaCompraCent,
-            valor_recebido: valorPagoCent,
-          });
-          console.log(res);
+          try {
+            let res = await invoke("calcular", {
+              valor_total: valorDaCompraCent,
+              valor_recebido: valorPagoCent,
+            });
+            console.log(res);
+          } catch (error) {
+            console.log(error);
+          }
         }}
       >
         Calcular
