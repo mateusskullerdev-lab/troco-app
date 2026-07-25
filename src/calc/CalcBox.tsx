@@ -2,7 +2,12 @@ import { invoke } from "@tauri-apps/api/core";
 import "./CalcBox.css";
 import { useState } from "react";
 
-function CalcBox() {
+interface CalcBoxProps {
+  isActive: boolean;
+  handleCalc: (res: any) => void;
+}
+
+function CalcBox({ isActive, handleCalc }: CalcBoxProps) {
   const [valorPagoCent, setValorPagoCent] = useState(0);
   const [valorDaCompraCent, setValorDaCompraCent] = useState(0);
 
@@ -17,7 +22,9 @@ function CalcBox() {
       currency: "BRL",
     });
   };
-
+  if (!isActive) {
+    return null;
+  }
   return (
     <div className="flex flex-col m-2">
       <label className="flex justify-center text-white">
@@ -52,9 +59,10 @@ function CalcBox() {
               valor_total: valorDaCompraCent,
               valor_recebido: valorPagoCent,
             });
+            handleCalc(res);
             console.log(res);
           } catch (error) {
-            alert("Valor recebido é insuficiente para pagar a compra");
+            alert("Valor recebido é insuficiente para pagar a compra" + error);
           }
         }}
       >
