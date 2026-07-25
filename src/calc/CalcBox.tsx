@@ -2,6 +2,7 @@ import { invoke } from "@tauri-apps/api/core";
 import "./CalcBox.css";
 import { useState } from "react";
 import formatarMoeda from "../utils/formatarMoedas";
+import ErrorMessage from "../ErrorMessage";
 interface CalcBoxProps {
   isActive: boolean;
   handleCalc: (res: any) => void;
@@ -10,7 +11,11 @@ interface CalcBoxProps {
 function CalcBox({ isActive, handleCalc }: CalcBoxProps) {
   const [valorPagoCent, setValorPagoCent] = useState(0);
   const [valorDaCompraCent, setValorDaCompraCent] = useState(0);
-
+  const [isErrorActive, setIsErrorActive] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  function handleError() {
+    setIsErrorActive(!isErrorActive);
+  }
   const extrairCentavos = (texto: string): number => {
     const apenasNumeros = texto.replace(/\D/g, "");
     return apenasNumeros === "" ? 0 : parseInt(apenasNumeros, 10);
@@ -31,7 +36,6 @@ function CalcBox({ isActive, handleCalc }: CalcBoxProps) {
         value={formatarMoeda(valorPagoCent)}
         onChange={(e) => setValorPagoCent(extrairCentavos(e.target.value))}
       />
-
       <label className="flex justify-center text-white mt-2">
         Digite o valor da compra
       </label>
@@ -42,7 +46,6 @@ function CalcBox({ isActive, handleCalc }: CalcBoxProps) {
         value={formatarMoeda(valorDaCompraCent)}
         onChange={(e) => setValorDaCompraCent(extrairCentavos(e.target.value))}
       />
-
       <button
         className="bg-green-600 text-white font-bold rounded-xl ml-3 mr-3 mt-4 p-3 shadow-lg active:scale-95 transition"
         onClick={async () => {
@@ -55,15 +58,22 @@ function CalcBox({ isActive, handleCalc }: CalcBoxProps) {
             });
             handleCalc(res);
             console.log(res);
-            setValorDaCompraCent(0)
-            setValorPagoCent(0)
-          } catch (error) {
-            alert("Valor recebido é insuficiente para pagar a compra" + error);
+            setValorDaCompraCent(0);
+            setValorPagoCent(0);
+          } catch (error: any) {
+            setErrorMessage(error);
+            handleError();
           }
         }}
       >
         Calcular
       </button>
+      <ErrorMessage
+        error={errorMessage}
+        isActive={isErrorActive}
+        onClose={handleError}
+      />
+      ;
     </div>
   );
 }
