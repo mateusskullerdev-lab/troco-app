@@ -9,9 +9,10 @@ const imagens = import.meta.glob("../assets/*.{png,jpg}", {
 interface listTrocoProp {
   isActive: boolean;
   objetoTroco: trocoObjetoProps | null;
+  onReset: () => void;
 }
 
-function ResultLoader({ isActive, objetoTroco }: listTrocoProp) {
+function ResultLoader({ isActive, objetoTroco, onReset }: listTrocoProp) {
   if (!isActive || !objetoTroco) {
     return null;
   }
@@ -33,7 +34,7 @@ function ResultLoader({ isActive, objetoTroco }: listTrocoProp) {
 
   return (
     <section className="result-loader">
-       <p className="valor-total">{formatarMoeda(objetoTroco.valor_do_troco)}</p>
+      <p className="valor-total">{formatarMoeda(objetoTroco.valor_do_troco)}</p>
       {objetoTroco.itens
         .filter((item) => item.quantidade > 0)
         .map((item) => {
@@ -57,7 +58,7 @@ function ResultLoader({ isActive, objetoTroco }: listTrocoProp) {
             </div>
           );
         })}
-
+      <button className="voltar-btn" onClick={onReset}>Voltar</button>
     </section>
   );
 }
