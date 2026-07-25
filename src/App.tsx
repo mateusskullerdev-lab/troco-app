@@ -2,6 +2,7 @@ import CalcBox from "./calc/CalcBox";
 import "./App.css";
 import { useState } from "react";
 import ResultLoader from "./calc/ResultLoader";
+import { ResetProvider } from "./ResetContext";
 
 interface Denominacao {
   valor_em_centavos: number;
@@ -24,19 +25,28 @@ function App() {
   const [isCalcActive, setIsCalcActive] = useState(true);
   const [trocoList, setTrocoList] = useState<trocoObjetoProps | null>(null);
 
+  function resetAll() {
+    setIsCalcActive(true);
+    setTrocoList(null);
+  }
+
   function getSonList(list: trocoObjetoProps) {
     setTrocoList(list);
     handleCalcClose();
   }
+
   function handleCalcClose() {
     setIsCalcActive(false);
   }
+
   return (
-    <main className="container mt-10">
-      <h1 className="title ">Calculadora de troco</h1>
-      <CalcBox isActive={isCalcActive} handleCalc={getSonList} />
-      <ResultLoader isActive={!isCalcActive} objetoTroco={trocoList} />
-    </main>
+    <ResetProvider>
+      <main className="container mt-10">
+        <h1 className="title ">Calculadora de troco</h1>
+        <CalcBox isActive={isCalcActive} handleCalc={getSonList}  />
+        <ResultLoader isActive={!isCalcActive} objetoTroco={trocoList} onReset={resetAll} />
+      </main>
+    </ResetProvider>
   );
 }
 
