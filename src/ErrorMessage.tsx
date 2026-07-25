@@ -1,16 +1,22 @@
 interface ErrorMessageProps {
+  isActive: Boolean;
   error: String;
+  onClose: () => void;
 }
 
-function ErrorMessage({ error }: ErrorMessageProps) {
+function ErrorMessage({ error, isActive, onClose }: ErrorMessageProps) {
+  if (!isActive) {
+    return null;
+  }
   return (
     <div className="ui-overlay">
       <div className="error-box">
         <div className="error-text">
-        <p>{error}</p>
-        
+          <p>{error}</p>
         </div>
-        <button className="ok-btn">Ok</button>
+        <button className="ok-btn" onClick={onClose}>
+          Ok
+        </button>
       </div>
     </div>
   );
