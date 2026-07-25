@@ -1,7 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
 import "./CalcBox.css";
 import { useState } from "react";
-
+import formatarMoeda from "../utils/formatarMoedas";
 interface CalcBoxProps {
   isActive: boolean;
   handleCalc: (res: any) => void;
@@ -16,12 +16,7 @@ function CalcBox({ isActive, handleCalc }: CalcBoxProps) {
     return apenasNumeros === "" ? 0 : parseInt(apenasNumeros, 10);
   };
 
-  const formatarMoeda = (valorEmCentavos: number) => {
-    return (valorEmCentavos / 100).toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    });
-  };
+
   if (!isActive) {
     return null;
   }
