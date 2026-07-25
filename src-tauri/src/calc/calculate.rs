@@ -30,7 +30,7 @@ pub fn calcular_troco(
         itens,
     })
 }
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn calcular(valor_total: u32, valor_recebido: u32) -> Resultado {
     // Lista padrão do Real Brasileiro (em centavos)
     let moedas_e_notas = vec![
