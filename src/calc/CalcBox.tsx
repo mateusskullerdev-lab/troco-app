@@ -16,7 +16,6 @@ function CalcBox({ isActive, handleCalc }: CalcBoxProps) {
     return apenasNumeros === "" ? 0 : parseInt(apenasNumeros, 10);
   };
 
-
   if (!isActive) {
     return null;
   }
@@ -56,6 +55,8 @@ function CalcBox({ isActive, handleCalc }: CalcBoxProps) {
             });
             handleCalc(res);
             console.log(res);
+            setValorDaCompraCent(0)
+            setValorPagoCent(0)
           } catch (error) {
             alert("Valor recebido é insuficiente para pagar a compra" + error);
           }
